@@ -17,8 +17,12 @@ type TaskHandler struct {
 func (t *TaskHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	task := strings.TrimPrefix(r.URL.Path, "/api/v1/tasks")
 
-	w.WriteHeader(http.StatusNotFound)
-	fmt.Fprint(w, t.Store.GetTask(task))
+	title := t.Store.GetTask(task)
+	if title == "" {
+		w.WriteHeader(http.StatusNotFound)
+	}
+
+	fmt.Fprint(w, title)
 }
 
 func GetTask(task string) string {

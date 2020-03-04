@@ -38,7 +38,7 @@ func TestGETTasks(t *testing.T) {
 	})
 
 	t.Run("returns 404 No tasks", func(t *testing.T) {
-		request, _ := http.NewRequest(http.MethodGet, "/api/v1/tasks", nil)
+		request, _ := http.NewRequest(http.MethodGet, "/api/v1/tasks/work", nil)
 		response := httptest.NewRecorder()
 
 		handler.ServeHTTP(response, request)
