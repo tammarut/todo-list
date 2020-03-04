@@ -8,6 +8,7 @@ import (
 
 type TaskStore interface {
 	GetTask(task string) string
+	RecordTask(name string)
 }
 
 type TaskHandler struct {
@@ -25,6 +26,7 @@ func (t *TaskHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func (t *TaskHandler) processStore(w http.ResponseWriter) {
+	t.Store.RecordTask("homework")
 	w.WriteHeader(http.StatusAccepted)
 }
 

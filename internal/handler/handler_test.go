@@ -7,12 +7,16 @@ import (
 )
 
 type StubTaskStore struct {
-	title map[string]string
+	title      map[string]string
+	titleCalls []string
 }
 
 func (s *StubTaskStore) GetTask(taskname string) string {
 	task := s.title[taskname]
 	return task
+}
+func (s *StubTaskStore) RecordTask(name string) {
+	s.titleCalls = append(s.titleCalls, name)
 }
 
 func TestGETTasks(t *testing.T) {
@@ -20,6 +24,7 @@ func TestGETTasks(t *testing.T) {
 		map[string]string{
 			"": "sleep",
 		},
+		nil,
 	}
 	handler := &TaskHandler{&store}
 
@@ -55,6 +60,7 @@ func TestGETTasks(t *testing.T) {
 func TestStoreTasks(t *testing.T) {
 	store := StubTaskStore{
 		map[string]string{},
+		nil,
 	}
 	handler := &TaskHandler{&store}
 
@@ -69,6 +75,10 @@ func TestStoreTasks(t *testing.T) {
 
 		if got != want {
 			t.Errorf("got status %d want %d", got, want)
+		}
+
+		if len(store.titleCalls) != 1 {
+			t.Errorf("got %d calls to RecordWin want %d", len(store.titleCalls), 1)
 		}
 	})
 }
