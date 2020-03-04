@@ -15,11 +15,21 @@ type TaskHandler struct {
 }
 
 func (t *TaskHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	task := strings.TrimPrefix(r.URL.Path, "/api/v1/tasks")
-
-	if r.Method == http.MethodPost {
-		w.WriteHeader(http.StatusAccepted)
+	switch r.Method {
+	case http.MethodPost:
+		t.processStore(w)
+	case http.MethodGet:
+		t.showTask(w, r)
 	}
+
+}
+
+func (t *TaskHandler) processStore(w http.ResponseWriter) {
+	w.WriteHeader(http.StatusAccepted)
+}
+
+func (t *TaskHandler) showTask(w http.ResponseWriter, r *http.Request) {
+	task := strings.TrimPrefix(r.URL.Path, "/api/v1/tasks")
 
 	title := t.Store.GetTask(task)
 	if title == "" {
