@@ -3,8 +3,25 @@ package handler
 import (
 	"fmt"
 	"net/http"
+	"strings"
 )
 
-func TaskHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, "sleep")
+type TaskStore interface {
+	GetTask(task string) string
+}
+
+type TaskHandler struct {
+	store TaskStore
+}
+
+func (t *TaskHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	task := strings.TrimPrefix(r.URL.Path, "/api/v1/tasks")
+	fmt.Fprint(w, t.store.GetTask(task))
+}
+
+func GetTask(task string) string {
+	if task == "" {
+		return "sleep"
+	}
+	return ""
 }
