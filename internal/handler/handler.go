@@ -17,6 +17,10 @@ type TaskHandler struct {
 func (t *TaskHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	task := strings.TrimPrefix(r.URL.Path, "/api/v1/tasks")
 
+	if r.Method == http.MethodPost {
+		w.WriteHeader(http.StatusAccepted)
+	}
+
 	title := t.Store.GetTask(task)
 	if title == "" {
 		w.WriteHeader(http.StatusNotFound)

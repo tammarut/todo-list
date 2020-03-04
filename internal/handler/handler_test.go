@@ -51,3 +51,24 @@ func TestGETTasks(t *testing.T) {
 		}
 	})
 }
+
+func TestStoreTasks(t *testing.T) {
+	store := StubTaskStore{
+		map[string]string{},
+	}
+	handler := &TaskHandler{&store}
+
+	t.Run("Accepted store", func(t *testing.T) {
+		request, _ := http.NewRequest(http.MethodPost, "/api/v1/tasks", nil)
+		response := httptest.NewRecorder()
+
+		handler.ServeHTTP(response, request)
+
+		got := response.Code
+		want := http.StatusAccepted
+
+		if got != want {
+			t.Errorf("got status %d want %d", got, want)
+		}
+	})
+}
