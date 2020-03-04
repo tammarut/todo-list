@@ -11,12 +11,12 @@ type TaskStore interface {
 }
 
 type TaskHandler struct {
-	store TaskStore
+	Store TaskStore
 }
 
 func (t *TaskHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	task := strings.TrimPrefix(r.URL.Path, "/api/v1/tasks")
-	fmt.Fprint(w, t.store.GetTask(task))
+	fmt.Fprint(w, t.Store.GetTask(task))
 }
 
 func GetTask(task string) string {
