@@ -7,12 +7,16 @@ import (
 	"github.com/tammarut/todo-list/internal/handler"
 )
 
+// InMemoryTaskStore is struct
 type InMemoryTaskStore struct {
 }
 
+// GetTask will return task
 func (i *InMemoryTaskStore) GetTask(task string) string {
 	return "cook"
 }
+
+// RecordTask will save task in memory
 func (i *InMemoryTaskStore) RecordTask(name string) {
 }
 func main() {

@@ -6,15 +6,18 @@ import (
 	"strings"
 )
 
+// TaskStore is interface
 type TaskStore interface {
 	GetTask(task string) string
 	RecordTask(name string)
 }
 
+// TaskHandler is struct implementing TaskStore interface
 type TaskHandler struct {
 	Store TaskStore
 }
 
+// ServeHTTP is handler from request and switch method
 func (t *TaskHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodPost:
@@ -41,6 +44,7 @@ func (t *TaskHandler) showTask(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, title)
 }
 
+// GetTask will return task
 func GetTask(task string) string {
 	if task == "" {
 		return "sleep"
